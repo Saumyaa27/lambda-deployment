@@ -2,10 +2,10 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.10
+      python: 3.9
   build:
     commands:
-      - aws cloudformation package --template-file upload-to-search.yaml --s3-bucket artifacts-bucket-gl --output-template-file upload.yaml
+      - aws cloudformation package --template-file upload-to-search.yaml --s3-bucket open-search-docs --s3-prefix artifacts/ --output-template-file upload.yaml
 
 artifacts:
   type: zip
