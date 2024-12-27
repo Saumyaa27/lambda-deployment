@@ -8,7 +8,6 @@ from pypdf import PdfReader
 from io import BytesIO
 from io import StringIO
 
-
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -26,10 +25,9 @@ def lambda_handler(event, context):
 
 
 def extract_content(event):
-
     try:
-        #Read the target bucket from the lambda environment variable
-        targetBucket = os.environ['TARGET_BUCKET']
+        # Read the target bucket from the lambda environment variable
+        targetBucket = "open-search-docs"
     except:
         targetBucket = "skl-dest"
     print('Target bucket is', targetBucket)
@@ -38,7 +36,7 @@ def extract_content(event):
     key = event['Records'][0]['s3']['object']['key']
     print('The s3 bucket is', bucket, 'and the file name is', key)
     s3client = boto3.client('s3')
-    #csv_buffer = StringIO()
+    # csv_buffer = StringIO()
     response = s3client.get_object(Bucket=bucket, Key=key)
     obj = s3client.get_object(Bucket=bucket, Key=key)
     pdffile = response["Body"]
@@ -58,7 +56,7 @@ def extract_content(event):
     print("Creation date is", date)
     content = str(title) + "\n" + str(author) + "\n" + str(date) + "\n" + str(text)
     print("Content is\n" + content)
-    
-    s3client.put_object(Bucket=targetBucket, Key=key+".txt", Body=content)
+
+    s3client.put_object(Bucket=targetBucket, Key=key + ".txt", Body=content)
 
     print('All done, returning from extract content method')
